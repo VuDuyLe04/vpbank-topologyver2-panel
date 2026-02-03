@@ -1,0 +1,23 @@
+{
+    "example": "Example translation",
+    "topology-graph": {
+        "category-node-graph": "Topology Graph",
+        "name-zoom-mode": "Zoom mode",
+        "zoom-mode-options": {
+            "label-zoom-default": "Default",
+            "description-zoom-default": "Default zoom behavior"
+        },
+        "name-layout-algorithm": "Layout algorithm",
+        "layout-algorithm-options": {
+            "label-layered-topdown": "Layered Top Down",
+            "label-layered-bottomup": "Layered Bottom Up",
+            "label-layered-left-right": "Layered Left Right",
+            "label-layered-right-left": "Layered Right Left",
+            "description-layered": "Use a layered layout"
+        },
+        "category-nodes": "Nodes",
+        "name-main-stat-unit": "Main stat unit",
+        "name-secondary-stat-unit": "Secondary stat unit",
+        "category-edges": "Edges"
+    }
+}

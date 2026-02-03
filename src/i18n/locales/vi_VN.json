@@ -1,0 +1,23 @@
+{
+    "example": "Ví dụ dịch",
+    "node-graph": {
+        "category-node-graph": "Biểu đồ Topology",
+        "name-zoom-mode": "Chế độ thu phóng",
+        "zoom-mode-options": {
+            "label-zoom-default": "Mặc định",
+            "description-zoom-default": "Hành vi thu phóng mặc định"
+        },
+        "name-layout-algorithm": "Thuật toán bố cục",
+        "layout-algorithm-options": {
+            "label-layered-topdown": "Lớp từ trên xuống",
+            "label-layered-bottomup": "Lớp từ dưới lên",
+            "label-layered-left-right": "Lớp từ trái sang phải",
+            "label-layered-right-left": "Lớp từ phải sang trái",
+            "description-layered": "Sử dụng bố cục phân lớp"
+        },
+        "category-nodes": "Nút",
+        "name-main-stat-unit": "Đơn vị chỉ số chính",
+        "name-secondary-stat-unit": "Đơn vị chỉ số phụ",
+        "category-edges": "Cạnh"
+    }
+}
