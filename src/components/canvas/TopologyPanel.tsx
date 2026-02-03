@@ -105,10 +105,16 @@ export const TopologyPanel: React.FC<Props> = ({
                 <div className={styles.layerItem} />
                 <div className={styles.layerItem} />
             </div>
-
+            {/* Mid */}
             <div className={styles.rightGraphContainer}>
 
             </div>
+            {/* Right */}
+            <div className={styles.rightGraphContainer}>
+
+            </div>
+
+
         </div>
     );
 };
