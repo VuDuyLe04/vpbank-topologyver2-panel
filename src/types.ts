@@ -16,7 +16,6 @@ export interface RawNodeData {
   iconColor?: Field;
   icon?: IconName;
   metadata?: Record<string, unknown>;
-  tags?: string[];
   linkURL?: string;
 }
 
@@ -27,8 +26,10 @@ export interface RawEdgeData {
   id: string;
   source: string;
   target: string;
-  mainStat?: Field | string;
-  secondaryStat?: Field | string;
+  mainStat?: Field;
+  secondaryStat?: Field;
+  color?: string;
+  thickness?: number;
 }
 
 /**

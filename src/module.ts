@@ -19,19 +19,19 @@ export const plugin = new PanelPlugin<TopologyOptions>(SimplePanel)
   .setPanelOptions((builder, context) => {
     const category = [t('topology-graph.category-node-graph', 'Topology Graph')];
     builder.addBooleanSwitch({
-      name: t('topology-graph.name-enable-drag', 'Enable Drag'),
+      name: 'Enable Drag',
       category,
       path: 'enableDrag',
       defaultValue: true,
     });
     builder.addNumberInput({
-      name: t('topology-graph.name-node-spacing', 'Node spacing'),
+      name: 'Node spacing',
       category,
       path: 'nodeSpacing',
       defaultValue: 250,
     });
     builder.addNumberInput({
-      name: t('topology-graph.name-layer-height', 'Layer height'),
+      name: 'Layer height',
       category,
       path: 'layerHeight',
       defaultValue: 200,
@@ -49,11 +49,11 @@ export const plugin = new PanelPlugin<TopologyOptions>(SimplePanel)
       path: 'nodes',
       build: (builder) => {
         builder.addUnitPicker({
-          name: t('topology-graph.name-main-stat-unit', 'Main stat unit'),
+          name: 'Main stat unit',
           path: 'mainStatUnit',
         });
         builder.addUnitPicker({
-          name: t('topology-graph.name-secondary-stat-unit', 'Secondary stat unit'),
+          name: 'Secondary stat unit',
           path: 'secondaryStatUnit',
         });
       },
@@ -63,11 +63,11 @@ export const plugin = new PanelPlugin<TopologyOptions>(SimplePanel)
       path: 'edges',
       build: (builder) => {
         builder.addUnitPicker({
-          name: t('topology-graph.name-main-stat-unit', 'Main stat unit'),
+          name: 'Main stat unit',
           path: 'mainStatUnit',
         });
         builder.addUnitPicker({
-          name: t('topology-graph.name-secondary-stat-unit', 'Secondary stat unit'),
+          name: 'Secondary stat unit',
           path: 'secondaryStatUnit',
         });
       },
