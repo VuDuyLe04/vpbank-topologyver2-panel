@@ -1,8 +1,7 @@
 
 export interface Options {
-    disableGrouping: boolean;
     // Layout customization
-    nodeSpacing?: number
+    nodeSpacing?: number;
     layerHeight?: number;
 
     // Node rendering
