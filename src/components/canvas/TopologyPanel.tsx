@@ -4,6 +4,7 @@ import { GrafanaTheme2, PanelProps } from '@grafana/data';
 import { useTheme2, useStyles2 } from '@grafana/ui';
 
 import { Options as TopologyOptions } from '../../config/panelCfg';
+import { LayerLeftSide } from './LayerLeftSide';
 
 const getStyles = (theme: GrafanaTheme2) => ({
     wrapper: css({
@@ -93,18 +94,14 @@ export const TopologyPanel: React.FC<Props> = ({
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.leftContainer}>
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-            </div>
+            <LayerLeftSide
+                numErrors={[]}
+                numNodes={[]}
+                width={width / 6}
+                height={height}
+                layers={options.layers}
+                pick={0}
+            />
 
             <div className={styles.rightGraphContainer}>
 
