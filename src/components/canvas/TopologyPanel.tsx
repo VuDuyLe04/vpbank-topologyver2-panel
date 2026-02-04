@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { css } from '@emotion/css';
 import { GrafanaTheme2, PanelProps } from '@grafana/data';
 import { useTheme2, useStyles2 } from '@grafana/ui';
@@ -91,16 +91,18 @@ export const TopologyPanel: React.FC<Props> = ({
     const styles = useStyles2(() => getStyles(theme));
 
     const graphWidth = (width * 5) / 6;
+    const [pick, setPick] = useState<number>(0);
 
     return (
         <div className={styles.wrapper}>
             <LayerLeftSide
-                numErrors={[]}
-                numNodes={[]}
+                numErrors={[0, 0]}
+                numNodes={[1, 1]}
                 width={width / 6}
                 height={height}
                 layers={options.layers}
-                pick={0}
+                pick={pick}
+                onPickChange={setPick}
             />
 
             <div className={styles.rightGraphContainer}>

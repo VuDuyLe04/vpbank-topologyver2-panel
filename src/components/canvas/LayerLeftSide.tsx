@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/css';
-import { GrafanaTheme2, PanelProps } from '@grafana/data';
+import { GrafanaTheme2, PanelProps, stringToJsRegex } from '@grafana/data';
 import { useTheme2, useStyles2, Icon } from '@grafana/ui';
 import {LayerConfig} from '../../config/panelCfg';
 
@@ -28,7 +28,8 @@ const getStyles = (theme: GrafanaTheme2) => ({
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
+        padding: '0 12px',
+        gap: '8px',
         // Đan xen màu: phần lẻ màu đậm hơn, phần chẵn màu nhạt hơn
         '&:nth-child(odd)': {
             background: theme.colors.background.secondary,
@@ -40,6 +41,34 @@ const getStyles = (theme: GrafanaTheme2) => ({
         '&:hover': {
             filter: 'brightness(1.1)',
         }
+    }),
+    layerContent: css({
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontSize: '14px',
+    }),
+    layerLabel: css({
+        margin: 0,
+        fontWeight: 500,
+        color: theme.colors.secondary.text,
+    }),
+    layerLabelOnPick: css({
+        margin: 0,
+        fontWeight: 500,
+        color: theme.colors.primary.text,
+    }),
+    layerCount: css({
+        fontSize: '12px',
+        opacity: 0.7,
+        whiteSpace: 'nowrap',
+    }),
+    layerCountError: css({
+        fontSize: '12px',
+        opacity: 0.7,
+        whiteSpace: 'nowrap',
+        color: theme.colors.error.text,
     }),
 });
 
@@ -58,6 +87,7 @@ export const LayerLeftSide: LayerLeftSideProps = ({
   height,
   layers,
   pick,
+  onPickChange,
 }) => {
     const theme = useTheme2();
     const styles = useStyles2(getStyles);
@@ -65,9 +95,13 @@ export const LayerLeftSide: LayerLeftSideProps = ({
     const layerItems = [];
     for (let i = layers.length - 1; i >= 0; --i) {
       layerItems.push(
-        <div className={styles.layerItem}>
-          <Icon name={layers[i].icon} color={i === pick ? theme.colors.primary.text : theme.colors.text.secondary} />
-          <p>{layers[i].label}</p>
+        <div key={i} className={styles.layerItem} onClick={() => onPickChange(i)}>
+          <Icon name={layers[i].icon} size="lg" color={i === pick ? theme.colors.primary.text : theme.colors.text.secondary} />
+          <div className={styles.layerContent}>
+            <p className={i === pick ? styles.layerLabelOnPick : styles.layerLabel}>{layers[i].label}</p>
+            {numErrors[i] > 0 && <span className={styles.layerCountError}>{numErrors[i]}</span>}
+            <span className={styles.layerCount}>{numNodes[i]}</span>
+          </div>
         </div>
       );
     }
