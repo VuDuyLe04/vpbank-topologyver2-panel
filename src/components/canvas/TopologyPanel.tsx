@@ -117,17 +117,8 @@ export const TopologyPanel: React.FC<Props> = ({
         let newCnt: number[] = new Array(options.layers.length).fill(0);
         for (let i = 0; i < nwRawNodes.length; i++) {
             newCnt[nwRawNodes[i].layer] ++;
-            mapBack.set(nwRawNodes[i].id, nwRawNodes[i].layer);
+            mapBack.set(String(nwRawNodes[i].id), Number(nwRawNodes[i].layer));
         }
-
-        setDebug(<div>
-            {nwRawEdges.map((edge, index) => (
-                <div>
-                    ID: {edge.id}, Source: {edge.source}, Target: {edge.target}
-                     pick: {pick}  Map: {mapBack.get(edge.source)} - {mapBack.get(edge.target)}
-                </div>
-            ))}
-        </div>);
 
         setMapBackToLayer(mapBack);
         setCnt(newCnt);
@@ -142,35 +133,15 @@ export const TopologyPanel: React.FC<Props> = ({
             }
         }
 
+        let x: any[] = [];
         for (let i = 0; i < rawEdges.length; i++) {
-            if (mapBackToLayer.get(rawEdges[i].source.id) == pick && mapBackToLayer.get(rawEdges[i].target.id) == pick) {
+            if (mapBackToLayer.get(rawEdges[i].source) == pick && mapBackToLayer.get(rawEdges[i].target) == pick) {
                 cntEdgesInGraph.push(rawEdges[i]);
             }
-
-            setDebug(<div>
-                {mapBackToLayer.get(rawEdges[i].source.id)} - {mapBackToLayer.get(rawEdges[i].target.id)}
-                -- {pick}
-                -- {mapBackToLayer.get(rawEdges[i].source.id) == pick} -- {mapBackToLayer.get(rawEdges[i].target.id) == pick}
-            </div>
-            );
         }
+
         setListNodes(cntNodesInGraph);
         setListEdges(cntEdgesInGraph);
-
-        // setDebug(<div>
-        //     {cntNodesInGraph.map((node, index) => (
-        //         <div>
-        //             ID: {node.id}, Title: {node.title}, Layer: {node.layer}
-        //         </div>
-        //     ))}
-        //     {cntEdgesInGraph.length} {pick}
-        //     {cntEdgesInGraph.map((edge, index) => (
-        //         <div>
-        //             ID: {edge.id}, Source: {edge.source}, Target: {edge.target}
-        //             pick: {pick}
-        //         </div>
-        //     ))}
-        // </div>);
     }, [pick]);
 
     return (
@@ -186,7 +157,21 @@ export const TopologyPanel: React.FC<Props> = ({
             />
 
             <div className={styles.rightGraphContainer}>
-                {debug}
+                {
+                    listNodesInGraph.map((node, idx) => (
+                        <div>
+                            ID: {node.id} - Layer: {node.layer}
+                        </div>
+                    ))
+                }
+
+                {
+                    listEdgesInGraph.map((edge, idx) => (
+                        <div>
+                            ID: {edge.id} - Source: {edge.source} - Target: {edge.target}
+                        </div>
+                    ))
+                }
             </div>
 
             {/* <
