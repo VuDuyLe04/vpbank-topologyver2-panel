@@ -7,9 +7,11 @@ export type { Options as NodeGraphOptions } from './config/panelCfg';
 export interface RawNodeData {
   id: string;
   title: string;
+  layer: number;
   subTitle?: string;
   type?: string;
   mainStat?: Field;
+  color?: Field;
   secondaryStat?: Field;
   borderColor?: Field;
   backgroundColor?: Field;
@@ -27,8 +29,11 @@ export interface RawEdgeData {
   id: string;
   source: string;
   target: string;
+  color?: string;
   mainStat?: Field | string;
   secondaryStat?: Field | string;
+  thickness?: number;
+  strokeDasharray?: string;
 }
 
 /**

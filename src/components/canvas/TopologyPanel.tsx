@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { css } from '@emotion/css';
 import { GrafanaTheme2, PanelProps } from '@grafana/data';
 import { useTheme2, useStyles2 } from '@grafana/ui';
 
 import { Options as TopologyOptions } from '../../config/panelCfg';
 import { LayerLeftSide } from './LayerLeftSide';
+
+import {extractTopologyData} from '../../utils/dataFrameTransformer';
+import { useHover } from '../../utils/useHover';   
+import { RawNodeData, RawEdgeData } from 'types';
 
 const getStyles = (theme: GrafanaTheme2) => ({
     wrapper: css({
@@ -90,14 +94,90 @@ export const TopologyPanel: React.FC<Props> = ({
     const theme = useTheme2();
     const styles = useStyles2(() => getStyles(theme));
 
-    const graphWidth = (width * 5) / 6;
+    // const graphWidth = (width * 5) / 6;
     const [pick, setPick] = useState<number>(0);
+
+    const [cnt, setCnt] = useState<number[]>([]);
+    const [debug, setDebug] = useState<any>("");
+
+    const [mapBackToLayer, setMapBackToLayer] = useState<Map<string, number>>(new Map());
+    const [listNodesInGraph, setListNodes] = useState<RawNodeData[]>([]);
+    const [listEdgesInGraph, setListEdges] = useState<RawEdgeData[]>([]);
+    const [rawNodes, setRawNodes] = useState<RawNodeData[]>([]);
+    const [rawEdges, setRawEdges] = useState<RawEdgeData[]>([]);
+
+    useEffect(() => {
+        const dataSeries = data?.series ?? [];
+        const [nwRawNodes, nwRawEdges] = extractTopologyData(dataSeries, undefined);
+
+        setRawNodes(nwRawNodes);
+        setRawEdges(nwRawEdges);
+
+        let mapBack: Map<string, number> = new Map();
+        let newCnt: number[] = new Array(options.layers.length).fill(0);
+        for (let i = 0; i < nwRawNodes.length; i++) {
+            newCnt[nwRawNodes[i].layer] ++;
+            mapBack.set(nwRawNodes[i].id, nwRawNodes[i].layer);
+        }
+
+        setDebug(<div>
+            {nwRawEdges.map((edge, index) => (
+                <div>
+                    ID: {edge.id}, Source: {edge.source}, Target: {edge.target}
+                     pick: {pick}  Map: {mapBack.get(edge.source)} - {mapBack.get(edge.target)}
+                </div>
+            ))}
+        </div>);
+
+        setMapBackToLayer(mapBack);
+        setCnt(newCnt);
+    }, [options, data, width, height, fieldConfig, id]);
+
+    useEffect(() => {
+        let cntNodesInGraph: RawNodeData[] = [];
+        let cntEdgesInGraph: RawEdgeData[] = [];
+        for (let i = 0; i < rawNodes.length; i++) {
+            if (rawNodes[i].layer == pick) {
+                cntNodesInGraph.push(rawNodes[i]);
+            }
+        }
+
+        for (let i = 0; i < rawEdges.length; i++) {
+            if (mapBackToLayer.get(rawEdges[i].source.id) == pick && mapBackToLayer.get(rawEdges[i].target.id) == pick) {
+                cntEdgesInGraph.push(rawEdges[i]);
+            }
+
+            setDebug(<div>
+                {mapBackToLayer.get(rawEdges[i].source.id)} - {mapBackToLayer.get(rawEdges[i].target.id)}
+                -- {pick}
+                -- {mapBackToLayer.get(rawEdges[i].source.id) == pick} -- {mapBackToLayer.get(rawEdges[i].target.id) == pick}
+            </div>
+            );
+        }
+        setListNodes(cntNodesInGraph);
+        setListEdges(cntEdgesInGraph);
+
+        // setDebug(<div>
+        //     {cntNodesInGraph.map((node, index) => (
+        //         <div>
+        //             ID: {node.id}, Title: {node.title}, Layer: {node.layer}
+        //         </div>
+        //     ))}
+        //     {cntEdgesInGraph.length} {pick}
+        //     {cntEdgesInGraph.map((edge, index) => (
+        //         <div>
+        //             ID: {edge.id}, Source: {edge.source}, Target: {edge.target}
+        //             pick: {pick}
+        //         </div>
+        //     ))}
+        // </div>);
+    }, [pick]);
 
     return (
         <div className={styles.wrapper}>
             <LayerLeftSide
-                numErrors={[0, 0]}
-                numNodes={[1, 1]}
+                numErrors={[1, 1]}
+                numNodes={cnt}
                 width={width / 6}
                 height={height}
                 layers={options.layers}
@@ -106,8 +186,11 @@ export const TopologyPanel: React.FC<Props> = ({
             />
 
             <div className={styles.rightGraphContainer}>
-
+                {debug}
             </div>
+
+            {/* <
+            /> */}
         </div>
     );
 };

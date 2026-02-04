@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { css } from '@emotion/css';
-import { GrafanaTheme2, PanelProps, stringToJsRegex } from '@grafana/data';
+import { GrafanaTheme2 } from '@grafana/data';
 import { useTheme2, useStyles2, Icon } from '@grafana/ui';
 import {LayerConfig} from '../../config/panelCfg';
 
-import { Options as TopologyOptions } from '../../config/panelCfg';
+// import { useHover } from '../../utils/useHover';
+// import { Options as TopologyOptions } from '../../config/panelCfg';
 
 const getStyles = (theme: GrafanaTheme2) => ({
     wrapper: css({
@@ -78,9 +79,11 @@ interface LayerLeftSideProps{
   width: number;
   height: number;
   layers: LayerConfig[];
-}
+  pick: number;
+  onPickChange: (pick: number) => void;
+};
 
-export const LayerLeftSide: LayerLeftSideProps = ({
+export const LayerLeftSide: React.FC<LayerLeftSideProps> = ({
   numErrors,
   numNodes,
   width,
@@ -93,15 +96,35 @@ export const LayerLeftSide: LayerLeftSideProps = ({
     const styles = useStyles2(getStyles);
 
     const layerItems = [];
+    //  layers.map((layer, i) => (
+    //   <LayerRow
+    //     key={i}
+    //     idx={i}
+    //     layer={layer}
+    //     pick={pick}
+    //     numErrors={numErrors}
+    //     numNodes={numNodes}
+    //     onPickChange={onPickChange}
+    //   />
+    // ))
+
     for (let i = layers.length - 1; i >= 0; --i) {
-      layerItems.push(
-        <div key={i} className={styles.layerItem} onClick={() => onPickChange(i)}>
-          <Icon name={layers[i].icon} size="lg" color={i === pick ? theme.colors.primary.text : theme.colors.text.secondary} />
-          <div className={styles.layerContent}>
-            <p className={i === pick ? styles.layerLabelOnPick : styles.layerLabel}>{layers[i].label}</p>
-            {numErrors[i] > 0 && <span className={styles.layerCountError}>{numErrors[i]}</span>}
-            <span className={styles.layerCount}>{numNodes[i]}</span>
-          </div>
+    //   const { isHovered, ref } = useHover();
+        layerItems.push(
+        <div
+            className={styles.layerItem}
+            onClick={() => onPickChange(i)}>
+            <Icon
+                name={layers[i].icon}
+                size="lg"
+                color={i === pick ? theme.colors.primary.text : theme.colors.text.secondary}
+            />
+            <div className={styles.layerContent}>
+                <p className={i === pick ? styles.layerLabelOnPick : styles.layerLabel}>{layers[i].label}</p>
+                {numErrors[i] > 0 ?
+                      <span className={styles.layerCount}>{<span style={{color: theme.colors.error.text}}>{numErrors[i]}</span>} / {numNodes[i]}</span>
+                    : <span className={styles.layerCount}>{numNodes[i]}</span> }
+            </div>
         </div>
       );
     }
