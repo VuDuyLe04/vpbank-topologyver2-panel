@@ -4,6 +4,7 @@ import { GrafanaTheme2, PanelProps } from '@grafana/data';
 import { useTheme2, useStyles2 } from '@grafana/ui';
 
 import { Options as TopologyOptions } from '../../config/panelCfg';
+import { Canvas } from './Canvas';
 
 const getStyles = (theme: GrafanaTheme2) => ({
     wrapper: css({
@@ -89,7 +90,7 @@ export const TopologyPanel: React.FC<Props> = ({
     const theme = useTheme2();
     const styles = useStyles2(() => getStyles(theme));
 
-    const graphWidth = (width * 5) / 6;
+
 
     return (
         <div className={styles.wrapper}>
@@ -105,15 +106,11 @@ export const TopologyPanel: React.FC<Props> = ({
                 <div className={styles.layerItem} />
                 <div className={styles.layerItem} />
             </div>
-            {/* Mid */}
-            <div className={styles.rightGraphContainer}>
 
-            </div>
             {/* Right */}
             <div className={styles.rightGraphContainer}>
-
+                <Canvas width={width * 5 / 6} height={height} />
             </div>
-
 
         </div>
     );
