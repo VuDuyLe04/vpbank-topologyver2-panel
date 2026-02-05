@@ -1,6 +1,6 @@
 import React from 'react';
 import { StandardEditorProps } from '@grafana/data';
-import { Button, Input, Select, IconButton, Field, TextArea } from '@grafana/ui';
+import { Button, Input, Select, IconButton, Field, TextArea, IconName } from '@grafana/ui';
 import { css } from '@emotion/css';
 import { LayerConfig } from './panelCfg';
 
@@ -89,7 +89,7 @@ export const LayerEditor: React.FC<Props> = ({ value, onChange }) => {
                         <Select
                             options={iconOptions}
                             value={layer.icon}
-                            onChange={(v) => onLayerChange(index, { ...layer, icon: v.value || 'circle' })}
+                            onChange={(v) => onLayerChange(index, { ...layer, icon: (v.value as IconName) || ('circle' as IconName) })}
                         />
                     </Field>
 

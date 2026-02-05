@@ -1,3 +1,4 @@
+import { IconName } from '@grafana/ui';
 
 export interface Options {
     // Layout customization
@@ -22,6 +23,6 @@ export interface Options {
 
 export interface LayerConfig {
     label: string;
-    icon: string;
+    icon: IconName;
     description: string;
 }

@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/css';
 import { GrafanaTheme2, PanelProps } from '@grafana/data';
 import { useTheme2, useStyles2 } from '@grafana/ui';
 
 import { Options as TopologyOptions } from '../../config/panelCfg';
+import { LayerLeftSide } from './LayerLeftSide';
 import { Canvas } from './Canvas';
+import { extractTopologyData } from '../../utils/dataFrameTransformer';
+import { useHover } from '../../utils/useHover';
+import { RawNodeData, RawEdgeData } from 'types';
 
 const getStyles = (theme: GrafanaTheme2) => ({
     wrapper: css({
@@ -90,28 +94,74 @@ export const TopologyPanel: React.FC<Props> = ({
     const theme = useTheme2();
     const styles = useStyles2(() => getStyles(theme));
 
+    // const graphWidth = (width * 5) / 6;
+    const [pick, setPick] = useState<number>(0);
 
+    const [cnt, setCnt] = useState<number[]>([]);
+    const [debug, setDebug] = useState<any>("");
 
+    const [mapBackToLayer, setMapBackToLayer] = useState<Map<string, number>>(new Map());
+    const [listNodesInGraph, setListNodes] = useState<RawNodeData[]>([]);
+    const [listEdgesInGraph, setListEdges] = useState<RawEdgeData[]>([]);
+    const [rawNodes, setRawNodes] = useState<RawNodeData[]>([]);
+    const [rawEdges, setRawEdges] = useState<RawEdgeData[]>([]);
+
+    useEffect(() => {
+        const dataSeries = data?.series ?? [];
+        const [nwRawNodes, nwRawEdges] = extractTopologyData(dataSeries, undefined);
+
+        setRawNodes(nwRawNodes);
+        setRawEdges(nwRawEdges);
+
+        let mapBack: Map<string, number> = new Map();
+        let newCnt: number[] = new Array(options.layers.length).fill(0);
+        for (let i = 0; i < nwRawNodes.length; i++) {
+            newCnt[nwRawNodes[i].layerOrder]++;
+            mapBack.set(String(nwRawNodes[i].id), Number(nwRawNodes[i].layerOrder));
+        }
+
+        setMapBackToLayer(mapBack);
+        setCnt(newCnt);
+    }, [options, data, width, height, fieldConfig, id]);
+
+    useEffect(() => {
+        let cntNodesInGraph: RawNodeData[] = [];
+        let cntEdgesInGraph: RawEdgeData[] = [];
+        for (let i = 0; i < rawNodes.length; i++) {
+            if (rawNodes[i].layerOrder == pick) {
+                cntNodesInGraph.push(rawNodes[i]);
+            }
+        }
+
+        let x: any[] = [];
+        for (let i = 0; i < rawEdges.length; i++) {
+            if (mapBackToLayer.get(rawEdges[i].source) == pick && mapBackToLayer.get(rawEdges[i].target) == pick) {
+                cntEdgesInGraph.push(rawEdges[i]);
+            }
+        }
+
+        setListNodes(cntNodesInGraph);
+        setListEdges(cntEdgesInGraph);
+    }, [pick]);
+
+    console.log(listNodesInGraph);
+    console.log(listEdgesInGraph);
     return (
         <div className={styles.wrapper}>
-            <div className={styles.leftContainer}>
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-                <div className={styles.layerItem} />
-            </div>
+            <LayerLeftSide
+                numErrors={[1, 1]}
+                numNodes={cnt}
+                width={width / 6}
+                height={height}
+                layers={options.layers}
+                pick={pick}
+                onPickChange={setPick}
+            />
 
             {/* Right */}
             <div className={styles.rightGraphContainer}>
                 <Canvas width={width * 5 / 6} height={height} />
             </div>
-
         </div>
     );
 };
