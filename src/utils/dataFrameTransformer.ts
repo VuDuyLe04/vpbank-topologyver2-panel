@@ -7,7 +7,7 @@ import { RawNodeData, RawEdgeData } from '../types';
 export interface DataFrameParseConfig {
     nodeIdField?: string;
     nodeTitleField?: string;
-    nodeLayerField?: string;
+    nodeLayerOrderField?: string;
     nodeTypeField?: string;
     nodeSubTitleField?: string;
     nodeMainStatField?: string;
@@ -33,7 +33,7 @@ export interface DataFrameParseConfig {
 const DEFAULT_PARSE_CONFIG: DataFrameParseConfig = {
     nodeIdField: 'id',
     nodeTitleField: 'title',
-    nodeLayerField: 'layer',
+    nodeLayerOrderField: 'layerOrder',
     nodeTypeField: 'type',
     nodeSubTitleField: 'subtitle',
     nodeMainStatField: 'main_stat',
@@ -75,7 +75,7 @@ export class DataFrameTransformer {
         // Find required fields - try exact match first, then fallback to first available fields
         let idField = this.findField(dataFrame, this.config.nodeIdField);
         let titleField = this.findField(dataFrame, this.config.nodeTitleField);
-        let layerField = this.findField(dataFrame, this.config.nodeLayerField?.toString());
+        let layerField = this.findField(dataFrame, this.config.nodeLayerOrderField?.toString());
 
         // Fallback: if no explicit fields found, use first two string fields
         if (!idField || !titleField) {

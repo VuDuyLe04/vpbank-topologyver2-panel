@@ -7,7 +7,7 @@ import { Options as TopologyOptions } from '../../config/panelCfg';
 import { LayerLeftSide } from './LayerLeftSide';
 import { Canvas } from './Canvas';
 import { extractTopologyData } from '../../utils/dataFrameTransformer';
-import { useHover } from '../../utils/useHover';
+// import { useHover } from '../../utils/useHover';
 import { RawNodeData, RawEdgeData } from 'types';
 
 const getStyles = (theme: GrafanaTheme2) => ({
@@ -98,7 +98,7 @@ export const TopologyPanel: React.FC<Props> = ({
     const [pick, setPick] = useState<number>(0);
 
     const [cnt, setCnt] = useState<number[]>([]);
-    const [debug, setDebug] = useState<any>("");
+    // const [debug, setDebug] = useState<any>("");
 
     const [mapBackToLayer, setMapBackToLayer] = useState<Map<string, number>>(new Map());
     const [listNodesInGraph, setListNodes] = useState<RawNodeData[]>([]);
@@ -116,8 +116,8 @@ export const TopologyPanel: React.FC<Props> = ({
         let mapBack: Map<string, number> = new Map();
         let newCnt: number[] = new Array(options.layers.length).fill(0);
         for (let i = 0; i < nwRawNodes.length; i++) {
-            newCnt[nwRawNodes[i].layerOrder]++;
-            mapBack.set(String(nwRawNodes[i].id), Number(nwRawNodes[i].layerOrder));
+            newCnt[nwRawNodes[i].layerOrder - 1]++;
+            mapBack.set(String(nwRawNodes[i].id), Number(nwRawNodes[i].layerOrder - 1));
         }
 
         setMapBackToLayer(mapBack);
@@ -133,7 +133,7 @@ export const TopologyPanel: React.FC<Props> = ({
             }
         }
 
-        let x: any[] = [];
+        // let x: any[] = [];
         for (let i = 0; i < rawEdges.length; i++) {
             if (mapBackToLayer.get(rawEdges[i].source) == pick && mapBackToLayer.get(rawEdges[i].target) == pick) {
                 cntEdgesInGraph.push(rawEdges[i]);
@@ -160,7 +160,12 @@ export const TopologyPanel: React.FC<Props> = ({
 
             {/* Right */}
             <div className={styles.rightGraphContainer}>
-                <Canvas width={width * 5 / 6} height={height} />
+                <Canvas
+                    width={width * 5 / 6}
+                    height={height}
+                    nodes={listNodesInGraph}
+                    edges={listEdgesInGraph}
+                />
             </div>
         </div>
     );

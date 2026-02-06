@@ -1,4 +1,4 @@
-import { DataFrame, Field, IconName } from '@grafana/data';
+import { Field, IconName } from '@grafana/data';
 export type { Options as NodeGraphOptions } from './config/panelCfg';
 
 /**
@@ -33,10 +33,3 @@ export interface RawEdgeData {
   thickness?: number;
 }
 
-/**
- * DataFrame structure for node and edge data
- */
-export interface GraphFrame {
-  nodes: DataFrame[];
-  edges: DataFrame[];
-}

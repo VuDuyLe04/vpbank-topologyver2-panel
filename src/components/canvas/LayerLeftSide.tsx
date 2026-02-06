@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
 import { useTheme2, useStyles2, Icon } from '@grafana/ui';
-import {LayerConfig} from '../../config/panelCfg';
+import { LayerConfig } from '../../config/panelCfg';
 
 // import { useHover } from '../../utils/useHover';
 // import { Options as TopologyOptions } from '../../config/panelCfg';
@@ -73,24 +73,24 @@ const getStyles = (theme: GrafanaTheme2) => ({
     }),
 });
 
-interface LayerLeftSideProps{
-  numErrors: number[];
-  numNodes: number[];
-  width: number;
-  height: number;
-  layers: LayerConfig[];
-  pick: number;
-  onPickChange: (pick: number) => void;
+interface LayerLeftSideProps {
+    numErrors: number[];
+    numNodes: number[];
+    width: number;
+    height: number;
+    layers: LayerConfig[];
+    pick: number;
+    onPickChange: (pick: number) => void;
 };
 
 export const LayerLeftSide: React.FC<LayerLeftSideProps> = ({
-  numErrors,
-  numNodes,
-  width,
-  height,
-  layers,
-  pick,
-  onPickChange,
+    numErrors,
+    numNodes,
+    width,
+    height,
+    layers,
+    pick,
+    onPickChange,
 }) => {
     const theme = useTheme2();
     const styles = useStyles2(getStyles);
@@ -109,24 +109,24 @@ export const LayerLeftSide: React.FC<LayerLeftSideProps> = ({
     // ))
 
     for (let i = layers.length - 1; i >= 0; --i) {
-    //   const { isHovered, ref } = useHover();
+        //   const { isHovered, ref } = useHover();
         layerItems.push(
-        <div
-            className={styles.layerItem}
-            onClick={() => onPickChange(i)}>
-            <Icon
-                name={layers[i].icon}
-                size="lg"
-                color={i === pick ? theme.colors.primary.text : theme.colors.text.secondary}
-            />
-            <div className={styles.layerContent}>
-                <p className={i === pick ? styles.layerLabelOnPick : styles.layerLabel}>{layers[i].label}</p>
-                {numErrors[i] > 0 ?
-                      <span className={styles.layerCount}>{<span style={{color: theme.colors.error.text}}>{numErrors[i]}</span>} / {numNodes[i]}</span>
-                    : <span className={styles.layerCount}>{numNodes[i]}</span> }
+            <div
+                className={styles.layerItem}
+                onClick={() => onPickChange(i)}>
+                <Icon
+                    name={layers[i].icon}
+                    size="lg"
+                    color={i === pick ? theme.colors.primary.text : theme.colors.text.secondary}
+                />
+                <div className={styles.layerContent}>
+                    <p className={i === pick ? styles.layerLabelOnPick : styles.layerLabel}>{layers[i].label}</p>
+                    {numErrors[i] > 0 ?
+                        <span className={styles.layerCount}>{<span style={{ color: theme.colors.error.text }}>{numErrors[i]}</span>} / {numNodes[i]}</span>
+                        : <span className={styles.layerCount}>{numNodes[i]}</span>}
+                </div>
             </div>
-        </div>
-      );
+        );
     }
 
     return (
