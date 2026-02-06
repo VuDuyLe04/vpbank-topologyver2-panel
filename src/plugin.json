@@ -1,13 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "TopologyVerDynatrace",
-  "id": "vuduyle-topologyverdynatrace-panel",
+  "name": "TopologyVer2",
+  "id": "vpbank-topologyver2-panel",
   "info": {
-    "keywords": ["panel"],
+    "keywords": [
+      "panel"
+    ],
     "description": "",
     "author": {
-      "name": "Vuduyle"
+      "name": "VPBank"
     },
     "logos": {
       "small": "img/logo.svg",
