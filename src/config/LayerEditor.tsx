@@ -1,6 +1,6 @@
 import React from 'react';
-import { StandardEditorProps } from '@grafana/data';
-import { Button, Input, Select, IconButton, Field, TextArea, IconName } from '@grafana/ui';
+import { StandardEditorProps, availableIconsIndex, IconName } from '@grafana/data';
+import { Button, Input, Select, IconButton, Field, TextArea } from '@grafana/ui';
 import { css } from '@emotion/css';
 import { LayerConfig } from './panelCfg';
 
@@ -45,12 +45,14 @@ export const LayerEditor: React.FC<Props> = ({ value, onChange }) => {
         onChange(newLayers);
     };
 
-    const iconOptions = [
-        { value: 'database', label: 'Database' },
-        { value: 'server', label: 'Server' },
-        { value: 'service', label: 'Service' },
-        { value: 'circle', label: 'Circle' },
-    ];
+    // Generate icon options from all available Grafana icons
+    const iconOptions = Object.keys(availableIconsIndex).map((iconName) => ({
+        value: iconName,
+        label: iconName
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' '),
+    }));
 
     return (
         <div>
