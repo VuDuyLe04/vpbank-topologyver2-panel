@@ -18,9 +18,9 @@ export const Canvas: React.FC<CanvasProps> = ({ width, height, nodes, edges }) =
     const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
     // Create a unique key based on node IDs to force GraphSearch remount when nodes change
-    const graphKey = useMemo(() => {
-        return nodes.map(n => n.id).join('-');
-    }, [nodes]);
+    // const graphKey = useMemo(() => {
+    //     return nodes.map(n => n.id).join('-');
+    // }, [nodes]);
 
     const onFocus = useCallback((value: GraphSearchOption | null) => {
         if (value === null) setSelectedNode(null);
@@ -67,7 +67,7 @@ export const Canvas: React.FC<CanvasProps> = ({ width, height, nodes, edges }) =
             {/* Search in top-right */}
             <ControlsContainer position={'top-right'}>
                 <GraphSearch
-                    key={graphKey}
+                    // key={graphKey}
                     type="nodes"
                     value={selectedNode ? { type: 'nodes', id: selectedNode } : null}
                     onFocus={onFocus}

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useSigma } from '@react-sigma/core';
 import { RawNodeData, RawEdgeData } from '../../types';
+import {circlepack} from 'graphology-layout';
+import forceLayout from 'graphology-layout-force';
 
 interface LoadGraphProps {
     nodes: RawNodeData[];
@@ -52,6 +54,18 @@ export const LoadGraph: React.FC<LoadGraphProps> = ({ nodes, edges }) => {
                 }
             });
         }
+
+        // circlepack.assign(graph);
+
+        // const positions = forceLayout(graph, {
+        //     maxIterations: 50,
+        //     settings: {
+        //         gravity: 10
+        //     }
+        // });
+
+        // To directly assign the positions to the nodes:
+        forceLayout.assign(graph, 50);
 
         // Refresh the sigma instance
         sigma.refresh();
