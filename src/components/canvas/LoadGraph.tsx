@@ -45,8 +45,9 @@ export const LoadGraph: React.FC<LoadGraphProps> = ({ nodes, edges }) => {
                 // Only add edge if both source and target nodes exist
                 if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
                     graph.addEdge(edge.source, edge.target, {
-                        size: edge.thickness || 2,
-                        color: edge.color || '#999',
+                        size: 3,
+                        color: '#808080',
+                        type: 'arrow'
                     });
                 }
             });

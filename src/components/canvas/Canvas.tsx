@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ControlsContainer, FullScreenControl, SigmaContainer, ZoomControl } from '@react-sigma/core';
 import '@react-sigma/core/lib/style.css';
 import { GraphSearch, GraphSearchOption } from '@react-sigma/graph-search';
@@ -16,6 +16,11 @@ interface CanvasProps {
 
 export const Canvas: React.FC<CanvasProps> = ({ width, height, nodes, edges }) => {
     const [selectedNode, setSelectedNode] = useState<string | null>(null);
+
+    // Create a unique key based on node IDs to force GraphSearch remount when nodes change
+    const graphKey = useMemo(() => {
+        return nodes.map(n => n.id).join('-');
+    }, [nodes]);
 
     const onFocus = useCallback((value: GraphSearchOption | null) => {
         if (value === null) setSelectedNode(null);
@@ -51,7 +56,7 @@ export const Canvas: React.FC<CanvasProps> = ({ width, height, nodes, edges }) =
                 labelRenderedSizeThreshold: 6,
 
                 defaultNodeColor: "#3498db",
-                defaultEdgeColor: "#2c3e50",
+                defaultEdgeColor: "#ff0000ff",
 
                 labelGridCellSize: 60,
             }}
@@ -62,6 +67,7 @@ export const Canvas: React.FC<CanvasProps> = ({ width, height, nodes, edges }) =
             {/* Search in top-right */}
             <ControlsContainer position={'top-right'}>
                 <GraphSearch
+                    key={graphKey}
                     type="nodes"
                     value={selectedNode ? { type: 'nodes', id: selectedNode } : null}
                     onFocus={onFocus}

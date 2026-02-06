@@ -128,7 +128,7 @@ export const TopologyPanel: React.FC<Props> = ({
         let cntNodesInGraph: RawNodeData[] = [];
         let cntEdgesInGraph: RawEdgeData[] = [];
         for (let i = 0; i < rawNodes.length; i++) {
-            if (rawNodes[i].layerOrder == pick) {
+            if ((rawNodes[i].layerOrder - 1) == pick) {
                 cntNodesInGraph.push(rawNodes[i]);
             }
         }
